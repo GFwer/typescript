@@ -1,0 +1,94 @@
+
+
+
+:root
+  --background #fff
+  --borderColor #eaecef
+  --color #2c3e50
+  --primary #0074c1
+  --tr #f6f8fa
+
+@media (prefers-color-scheme: dark)
+  :root
+    --background #2d2d2d
+    --borderColor #3d3d3d
+    --color #9fa6ad
+    --primary #0074c1
+    --tr #393939
+
+
+html, body
+  background-color var(--background)
+
+.navbar .site-name,
+a.sidebar-link
+  color var(--color)!important
+  &.active
+    color var(--primary)!important
+
+.page-nav .inner
+  border-top-color var(--borderColor)!important
+
+.nav-links a
+  &:hover,
+  &:focus,
+  &:active{
+    color var(--primary)!important
+  }
+
+body
+  color var(--color)
+
+
+.navbar
+  background-color var(--background)
+  border-bottom-color var(--borderColor)
+  > .links
+    background-color var(--background)!important
+
+.search-box input
+  background-color var(--background)!important
+  border-color var(--borderColor) !important
+
+
+.sidebar
+  background-color var(--background)
+  border-right-color var(--borderColor)
+
+{$contentClass}:not(.custom)
+  p.demo
+    border-color var(--borderColor)
+
+a
+  color $accentColor
+
+p a code
+  color $accentColor
+
+blockquote
+  color #999;
+  border-left-color var(--borderColor)
+
+h2
+  border-bottom 1px solid var(--borderColor)
+
+hr
+  border 0
+  border-top 1px solid var(--borderColor)
+
+table
+  border-collapse collapse
+  margin 1rem 0
+  display: block
+  overflow-x: auto
+
+tr
+  border-top 1px solid var(--borderColor)
+
+  &:nth-child(2n)
+    background-color var(--tr)
+
+th, td
+  border 1px solid var(--borderColor)
+  padding .6em 1em
+
