@@ -2,6 +2,7 @@ module.exports = {
   title: 'Fawen',
   description: 'TS 学习笔记系列',
   // theme: 'vuetify',
+  lang: 'zh-cn',
   themeConfig: {
     smoothScroll: true,
     nav: [
@@ -10,9 +11,22 @@ module.exports = {
         link: 'https://blog.gongfangwen.com'
       }
     ],
-    sidebar: {
-      '/guide/': ['', 'start', 'interface', 'function', 'literal']
-    }
+    // sidebar: {
+    //   '/types/': ['', 'start', 'interface', 'function', 'generics', 'enums']
+    // }
+    sidebar: [{
+      title: '开始',
+      collapsable: false,
+      children: ['/types/']
+    }, {
+      title: '类型系统',
+      collapsable: false,
+      children: ['/types/start', '/types/interface', '/types/function', '/types/generics', '/types/enums', '/types/unions and intersection types']
+    }, {
+      title: '进阶类型',
+      collapsable: false,
+      children: ['/advanced/', '/advanced/declaration merging', '/advanced/decorators']
+    }]
   },
   head: [
     ['link', { rel: 'icon', href: `/logo.png` }],
