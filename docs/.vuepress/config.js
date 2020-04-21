@@ -2,7 +2,11 @@ module.exports = {
   title: 'Fawen',
   description: 'TS 学习笔记系列',
   // theme: 'vuetify',
-  lang: 'zh-cn',
+  locales: {
+    '/': {
+      lang: 'zh-cn'
+    }
+  },
   themeConfig: {
     smoothScroll: true,
     nav: [
@@ -35,5 +39,10 @@ module.exports = {
   ],
   smoothScroll: true,
 
-  plugins: ['@vuepress/back-to-top', '@vuepress/active-header-links', '@vuepress/last-updated', '@vuepress/medium-zoom', '@vuepress/nprogress']
+  plugins: ['@vuepress/back-to-top', '@vuepress/active-header-links', '@vuepress/last-updated', '@vuepress/medium-zoom', '@vuepress/nprogress', [
+    '@vuepress/google-analytics',
+    {
+      'ga': 'UA-76012728-3'
+    }
+  ]]
 }
