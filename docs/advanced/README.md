@@ -30,7 +30,7 @@ if(fawen.line){
 }
 ```
 
-这时候可以使用类型断言，可以试代码正常工作，不过代码不免复杂：
+这时候可以使用类型断言，可以使代码通过类型检查，不过代码不免复杂：
 ```typescript
 if((person as Japanese).line){
   console.log((person as Japanese).line)
@@ -142,3 +142,117 @@ fawen.name = undefined; // Error: Type 'undefined' is not assignable to type 'st
 fawen.wechat = undefined;
 fawen.wechat = null; // Error: Type 'null' is not assignable to type 'string | undefined'
 ```
+
+## 类型别名
+
+类型别名`type`类似于`interface`，都是声明新的类型，不过使用上还是有细微的差别，总体来说，尽量使用`interface`，如果`interface`不能满足需求，再使用类型别名。
+比如说如果要使用`implements`和`extends`，应该使用`interface`，如果要使用联合类型，使用`type`会更方便。
+```typescript
+type Alias = { num: number }
+interface Interface {
+  num: number;
+}
+```
+
+## 字面量类型
+字面量类型是通过字面来准确描述一个变量。
+```typescript
+let fawen: 'Fawen';
+// 创建一个 fawen 的变量，它只能为`Fawen`
+fawen = 123; // Error: Type '123' is not assignable to type '"Fawen"'
+fawen = 'Fawen'; // 通过检查
+```
+
+通过联合类型可以组合一个变量的所有可能：
+```typescript
+type Direction = 'north' | 'south' | 'west' | 'east'
+
+function getDirection(direction: Direction) {
+  return direction
+}
+
+getDirection('1'); // Error: Argument of type '"1"' is not assignable to parameter of type 'Direction'.
+getDirection('north'); // 通过
+```
+
+## 判断联合类型
+
+当接口中含有字面量成员的时候，可以通过它来判断联合类型：
+```typescript
+interface Chinese {
+  country: 'china'
+}
+
+interface Japanese {
+  country: 'japan'
+}
+
+interface Korean {
+  country: 'korea'
+} 
+
+type Person = Chinese | Japanese | Korean
+```
+在声明了一个 Person 类之后，不同成员有不同属性，在函数中可以有多重方法来识别他们：
+```typescript
+function info(person: Person) {
+  if(person.country === 'china') { }
+  else if(person.country === 'japan') { }
+  // 由于排除了两种情况，TypeScript 能知道最后一种，不过通常来说会避免这种写法，因为实际可能会漏写
+  else { }
+}
+```
+使用 Switch 语句：
+```typescript
+function info(person: Person) {
+  switch (person.country) {
+    case 'china':
+      break;
+    case 'japan':
+      break;
+    case 'korea':
+      break;
+    default: 
+      // 通过 never 检查代码有没有疏漏，或者写个 never 函数抛出错误
+      const _exhaustiveCheck: never = person;
+      return _exhaustiveCheck
+  }
+}
+```
+
+## 索引类型
+
+通过索引类型，TypeScript 能够检查使用了动态属性名的代码，比如下面一个获取对象一些属性的值：
+```javascript
+function pluck(o, names) {
+  return names.map(n => o[n]);
+}
+```
+通过 TypeScript 可以定义如下：
+```typescript
+function pluck<T, K extends keyof T>(o: T, names: K[]): T[K][] {
+  return names.map(n => o[n]);
+}
+
+interface Person {
+    name: string;
+    age: number;
+}
+let person: Person = {
+    name: 'Jarid',
+    age: 35
+};
+let strings: string[] = pluck(person, ['name']);
+```
+以上代码主要在 pluck 的定义中，首先定义了两种类型 T 和 K，
+接着使用索引类型查询操作符`keysof T`查询 T 上已知的公共属性名的联合：
+```typescript
+interface Fawen {
+  name: string,
+  age: number
+}
+
+let keys = keysof Fawen
+//等价于 'name' | 'age'
+```
+通过上面的类型定义，当传入的`names`不在已知范围内的时候就会抛出错误，更有利于防止错误的产生。
